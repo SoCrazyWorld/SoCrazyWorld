@@ -24,7 +24,7 @@ def sftp_file_list(hostname, port, username, password, timeout, dir):
     """查看指定路径的sftp文件列表"""
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    # client.connect(hostname='122.144.137.11', port=2222, username='xiaowu', password='xiaowu', timeout=60)
+    
     client.connect(hostname=hostname, port=port, username=username, password=password, timeout=timeout)
     sftp = paramiko.SFTPClient.from_transport(client.get_transport())
     list = sftp.listdir(dir)
