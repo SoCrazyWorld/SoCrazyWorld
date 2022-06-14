@@ -178,7 +178,7 @@ def fm_email_update(request, nid):
 def eureka_get(request):
     """获取当前指定地址的所有注册服务"""
     if (request.GET.get("address") is None):
-        URL = "http://192.168.50.2:32123/"
+        URL = "指定一个默认的"
     else:
         URL = request.GET.get("address")
     eureka_list = []
