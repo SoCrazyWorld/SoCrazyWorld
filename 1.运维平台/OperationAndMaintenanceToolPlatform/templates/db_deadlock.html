@@ -1,0 +1,45 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>数据库死锁相关</title>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <h3 align="center">20.2数据库死锁</h3>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                当前共{{ count }}个死锁，具体死锁列表如下:
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">数据库用户</th>
+                    <th style="text-align: center">死锁内容</th>
+                    <th style="text-align: center">会话状态</th>
+                    <th style="text-align: center">死锁服务/客户端</th>
+                    <th style="text-align: center">应用类型</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for dl in deadlock_list %}
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ dl.0 }}</th>
+                        <td style="text-align: center">{{ dl.1 }}</td>
+                        <td style="text-align: center">{{ dl.2 }}</td>
+                        <td style="text-align: center">{{ dl.3 }}</td>
+                        <td style="text-align: center">{{ dl.4 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>定时任务配置帮助</title>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3 align="center">本页面用于说明定时任务格式等</h3>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading" style="color: #5bc0de;font-weight:bold;font-size: large">【Cron定时格式】</div>
+            <p>时间格式如下：</p>
+            <pre class="panel-primary prettyprint prettyprinted" style=""><span
+                    class="pln">f1   f2   f3   f4   f5</span></pre>
+            <ul>
+                <li>其中 f1 是表示分钟，f2 表示小时，f3 表示一个月份中的第几日，f4 表示月份，f5 表示一个星期中的第几天。</li>
+                <li>当 f1 为 * 时表示每分钟都要执行 program，f2 为 * 时表示每小时都要执行程序，其余类推</li>
+                <li>当 f1 为 a-b 时表示从第 a 分钟到第 b 分钟这段时间内要执行，f2 为 a-b 时表示从第 a 到第 b 小时都要执行，其余类推</li>
+                <li>当 f1 为 */n 时表示每 n 分钟个时间间隔执行一次，f2 为 */n 表示每 n 小时个时间间隔执行一次，其余类推</li>
+                <li>当 f1 为 a, b, c,... 时表示第 a, b, c,... 分钟要执行，f2 为 a, b, c,... 时表示第 a, b, c...个小时要执行，其余类推</li>
+                <li>50 7 * * * /sbin/service sshd start  意思是每天7：50开启ssh服务，其余类推</li>
+            </ul>
+            <pre class="prettyprint prettyprinted" style=""><span class="pun">*</span><span class="pln">    </span><span
+                    class="pun">*</span><span class="pln">    </span><span class="pun">*</span><span
+                    class="pln">    </span><span class="pun">*</span><span class="pln">    </span><span
+                    class="pun">*</span><span class="pln">
+</span><span class="pun">-</span><span class="pln">    </span><span class="pun">-</span><span
+                    class="pln">    </span><span class="pun">-</span><span class="pln">    </span><span
+                    class="pun">-</span><span class="pln">    </span><span class="pun">-</span><span class="pln">
+</span><span class="pun">|</span><span class="pln">    </span><span class="pun">|</span><span
+                    class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span
+                    class="pun">|</span><span class="pln">    </span><span class="pun">|</span><span class="pln">
+</span><span class="pun">|</span><span class="pln">    </span><span class="pun">|</span><span
+                    class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span
+                    class="pun">|</span><span class="pln">    </span><span class="pun">+-----</span><span
+                    class="pln"> </span><span class="pun">星期中星期几</span><span class="pln"> </span><span
+                    class="pun">(</span><span class="lit">0</span><span class="pln"> </span><span
+                    class="pun">-</span><span class="pln"> </span><span class="lit">6</span><span
+                    class="pun">)</span><span class="pln"> </span><span class="pun">(星期天</span><span
+                    class="pln"> </span><span class="pun">为</span><span class="lit">0</span><span
+                    class="pun">)</span><span class="pln">
+</span><span class="pun">|</span><span class="pln">    </span><span class="pun">|</span><span
+                    class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span class="pun">+----------</span><span
+                    class="pln"> </span><span class="pun">月份</span><span class="pln"> </span><span
+                    class="pun">(</span><span class="lit">1</span><span class="pln"> </span><span
+                    class="pun">-</span><span class="pln"> </span><span class="lit">12</span><span
+                    class="pun">)</span><span class="pln">
+</span><span class="pun">|</span><span class="pln">    </span><span class="pun">|</span><span
+                    class="pln">    </span><span class="pun">+---------------</span><span class="pln"> </span><span
+                    class="pun">一个月中的第几天</span><span class="pln"> </span><span class="pun">(</span><span
+                    class="lit">1</span><span class="pln"> </span><span class="pun">-</span><span
+                    class="pln"> </span><span class="lit">31</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">|</span><span class="pln">    </span><span class="pun">+--------------------</span><span
+                    class="pln"> </span><span class="pun">小时</span><span class="pln"> </span><span
+                    class="pun">(</span><span class="lit">0</span><span class="pln"> </span><span
+                    class="pun">-</span><span class="pln"> </span><span class="lit">23</span><span
+                    class="pun">)</span><span class="pln">
+</span><span class="pun">+-------------------------</span><span class="pln"> </span><span class="pun">分钟</span><span
+                    class="pln"> </span><span class="pun">(</span><span class="lit">0</span><span
+                    class="pln"> </span><span class="pun">-</span><span class="pln"> </span><span
+                    class="lit">59</span><span class="pun">)</span></pre>
+
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading" style="color: #5bc0de;font-weight:bold;font-size: large">【任务命令格式】</div>
+            <p>命令格式如下：</p>
+            <pre class="panel-primary prettyprint prettyprinted" style=""><span
+                    class="pln">cmd1;cmd2</span></pre>
+            <ul>
+                <li>定时任务命令请填写完整命令，如sh /home/oracle/test.sh</li>
+                <li>当有多个命令需要连贯执行的时候，可以用英文分号间隔开来，如cd /home;ls -l</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>定时任务执行记录</title>
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript">
+        function show_confirm(id, name) {
+            var r = confirm("请确认是否删除以下定时任务: " + name);
+            var url_d = '/cron/job/' + id + '/delete';
+            console.log(url_d);
+            if (r == true) {
+                console.log("准备执行删除");
+                $.get(url_d, function (data, status) {
+                    alert("处理结果: " + data + "\n接口状态: " + status);
+                    location.reload();
+                });
+            } else {
+                alert("已取消删除");
+            }
+        }
+
+        function show_detail(name, remote_ip, remote_port, remote_cmd, remote_name, timeout, cron_exp, use_flag, current_status, comment, update_time) {
+            var detail = "定时任务详情如下：\n任务名称：" + name + "\n远程服务器IP：" + remote_ip + "\n远程端口：" + remote_port + "\n远程执行命令："
+                + remote_cmd + "\n远程登录账号：" + remote_name + "\n超时标准：" + timeout + "S\nCron表达式：" + cron_exp + "\n是否启用：" + use_flag + "\n当前任务状态："
+                + current_status + "\n任务注释：" + comment + "\n修改时间：" + update_time;
+            alert(detail);
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                定时任务执行记录
+{#                （记录包括调度器触发执行和手动单次触发执行）#}
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">编号</th>
+{#                    <th style="text-align: center">任务ID</th>#}
+                    <th style="text-align: center">任务名称</th>
+                    <th style="text-align: center">任务详情</th>
+                    <th style="text-align: center">任务结果</th>
+                    <th style="text-align: center">起始时间</th>
+                    <th style="text-align: center">终止时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for job in job_his %}
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ forloop.counter }}</th>
+{#                        <td style="text-align: center">{{ job.job_id }}</td>#}
+                        <td style="text-align: center">{{ job.job_name }}</td>
+                        <td style="text-align: center">{{ job.job_detail }}</td>
+                        <td style="text-align: center">{{ job.get_result_display }}</td>
+                        <td style="text-align: center">{{ job.start_time|date:"Y-m-d  H:i:s" }}</td>
+                        <td style="text-align: center">{{ job.end_time|date:"Y-m-d  H:i:s" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a>注：由于暂未做分页设计，只展示最近200条记录</a>
+    </div>
+{% endblock %}

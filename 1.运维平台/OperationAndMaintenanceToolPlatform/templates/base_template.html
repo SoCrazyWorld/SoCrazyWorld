@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}{% endblock %}
+    {#    <title>宝山运维工具平台</title>#}
+    <link rel="stylesheet" href="{% static 'plugin/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+    </style>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    {% block js %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><strong>宝山运维工具平台</strong></a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {#            {% block navbar %}{% endblock %}#}
+                {% if navbarflag == 'home' %}
+                    <li class="active"><a href="/">首页</a></li>
+                    <li><a href="/fm/email">FM报警监控</a></li>
+                    <li><a href="/eureka">Eureka注册删除</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">定时任务 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cron/job">查看维护</a></li>
+                            <li><a href="/cron/job/history">执行记录</a></li>
+                            <li><a href="/cron/job/help">帮助说明</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">数据库日常查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/db/session">线程相关</a></li>
+                            <li><a href="/db/deadlock">死锁相关</a></li>
+                            <li><a href="/db/tablespace">表空间相关</a></li>
+                        </ul>
+                    </li>
+                {% elif navbarflag == 'fmalarm' %}
+                    <li><a href="/">首页</a></li>
+                    <li class="active"><a href="/fm/email">FM报警监控</a></li>
+                    <li><a href="/eureka">Eureka注册删除</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">定时任务 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cron/job">查看维护</a></li>
+                            <li><a href="/cron/job/history">执行记录</a></li>
+                            <li><a href="/cron/job/help">帮助说明</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">数据库日常查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/db/session">线程相关</a></li>
+                            <li><a href="/db/deadlock">死锁相关</a></li>
+                            <li><a href="/db/tablespace">表空间相关</a></li>
+                        </ul>
+                    </li>
+                {% elif navbarflag == 'eureka' %}
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/fm/email">FM报警监控</a></li>
+                    <li class="active"><a href="/eureka">Eureka注册删除</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">定时任务 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cron/job">查看维护</a></li>
+                            <li><a href="/cron/job/history">执行记录</a></li>
+                            <li><a href="/cron/job/help">帮助说明</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">数据库日常查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/db/session">线程相关</a></li>
+                            <li><a href="/db/deadlock">死锁相关</a></li>
+                            <li><a href="/db/tablespace">表空间相关</a></li>
+                        </ul>
+                    </li>
+                {% elif navbarflag == 'cron' %}
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/fm/email">FM报警监控</a></li>
+                    <li><a href="/eureka">Eureka注册删除</a></li>
+                    <li class="dropdown  active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">定时任务 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cron/job">查看维护</a></li>
+                            <li><a href="/cron/job/history">执行记录</a></li>
+                            <li><a href="/cron/job/help">帮助说明</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">数据库日常查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/db/session">线程相关</a></li>
+                            <li><a href="/db/deadlock">死锁相关</a></li>
+                            <li><a href="/db/tablespace">表空间相关</a></li>
+                        </ul>
+                    </li>
+                {% elif navbarflag == 'db' %}
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/fm/email">FM报警监控</a></li>
+                    <li><a href="/eureka">Eureka注册删除</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">定时任务 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cron/job">查看维护</a></li>
+                            <li><a href="/cron/job/history">执行记录</a></li>
+                            <li><a href="/cron/job/help">帮助说明</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">数据库日常查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/db/session">线程相关</a></li>
+                            <li><a href="/db/deadlock">死锁相关</a></li>
+                            <li><a href="/db/tablespace">表空间相关</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+
+
+            {##}
+            {#            <ul class="nav navbar-nav navbar-right">#}
+            {#                <li><a href="#">登录</a></li>#}
+            {#                <li class="dropdown">#}
+            {#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"#}
+            {#                       aria-expanded="false">伟哥 <span class="caret"></span></a>#}
+            {#                    <ul class="dropdown-menu">#}
+            {#                        <li><a href="#">个人信息</a></li>#}
+            {#                        <li><a href="#">预留</a></li>#}
+            {#                        <li><a href="#">登出</a></li>#}
+            {#                    </ul>#}
+            {#                </li>#}
+            {#            </ul>#}
+        </div>
+    </div>
+</nav>
+{% block head %}{% endblock %}
+
+<div>
+    {% block body %}{% endblock %}
+</div>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'plugin/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

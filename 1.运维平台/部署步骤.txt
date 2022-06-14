@@ -1,0 +1,22 @@
+1、本地打包
+2、上传到有docker打包环境的服务器50.3
+/home/justin/zlw
+3、开发环境导出安装文件
+pip freeze > requirements.txt
+4、docker基础镜像安装基础包
+pip install -r requirements.txt
+或者记得到哪个直接指定安装即可，可添加到Dockerfile里，也可以手动安装再commit
+pip install APScheduler==3.9.1
+5、打包镜像
+docker build -t wmnode6.icity.inesa.com/operate_maintenance_tool_platform:latest .
+6、上传镜像到镜像库，发布服务验证
+docker push wmnode6.icity.inesa.com/operate_maintenance_tool_platform:latest
+
+手动安装打包：
+docker run -itd --name python_base wmnode6.icity.inesa.com/python3_base_zlw:latest
+docker commit -a "zlw" -m "django,pymysql,cx_oracle,requests,bs4,crontab" fe4d6e9ed09f wmnode6.icity.inesa.com/python3_base_zlw:latest
+
+docker run -itd --name zlw -p 31200:8000 wmnode6.icity.inesa.com/operate_maintenance_tool_platform:latest
+
+docker stop zlw && docker rm zlw
+

@@ -1,0 +1,164 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>定时任务维护</title>
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript">
+        function show_confirm(id, name) {
+            var r = confirm("请确认是否删除以下定时任务: " + name);
+            var url_d = '/cron/job/' + id + '/delete';
+            console.log(url_d);
+            if (r == true) {
+                console.log("准备执行删除");
+                $.get(url_d, function (data, status) {
+                    alert("处理结果: " + data + "\n接口状态: " + status);
+                    location.reload();
+                });
+            } else {
+                alert("已取消删除");
+            }
+        }
+
+        function show_detail(name, remote_ip, remote_port, remote_cmd, remote_name, timeout, cron_exp, use_flag, current_status, comment, update_time) {
+            var detail = "定时任务详情如下：\n任务名称：" + name + "\n远程服务器IP：" + remote_ip + "\n远程端口：" + remote_port + "\n远程执行命令："
+                + remote_cmd + "\n远程登录账号：" + remote_name + "\n超时标准：" + timeout + "S\nCron表达式：" + cron_exp + "\n是否启用：" + use_flag + "\n当前任务状态："
+                + current_status + "\n任务注释：" + comment + "\n修改时间：" + update_time;
+            alert(detail);
+        }
+
+        function sche_init() {
+            var r = confirm("请确认是否初始化调度器，可能会影响正在运行中的任务");
+            var url_d = '/cron/job/reload';
+            console.log(url_d);
+            if (r == true) {
+                console.log("准备执行初始化调度器");
+                $.get(url_d, function (data, status) {
+                    alert("接口状态: " + status);
+                    location.reload();
+                });
+            } else {
+                alert("已取消初始化");
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3 align="center">维护定时任务及调度器</h3>
+        <h5 align="center">本页面用于维护定时任务参数以及调度器内任务维护，具体规则可参考【帮助说明】页面</h5>
+        <div style="margin-bottom: 10px;">
+            <a class="btn btn-success" href="/cron/job/add">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                新增任务</a>
+            <a class="btn btn-success" onclick="sche_init()">
+                调度器初始化</a>
+            <a style="margin-left: 10px">当前调度器已添加任务(含内部业务函数)：{{ job_add_num }}个</a>
+            <a style="margin-left: 30px">当前正在运行中的任务(不含内部业务函数)：{{ job_running_num }}个</a>
+            {#            <a class="btn btn-primary btn-xs" style="margin-left: 50px" href="/cron/job">页面刷新</a>#}
+            <a style="color: red;margin-left: 30px">{{ message }}</a>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                定时任务列表
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">编号</th>
+                    <th style="text-align: center">名称</th>
+                    <th style="text-align: center">目标机器IP</th>
+                    {#                    <th style="text-align: center">目标端口</th>#}
+                    <th style="text-align: center">目标命令</th>
+                    {#                    <th style="text-align: center">目标用户</th>#}
+                    {#                    <th style="text-align: center">超时设置(秒)</th>#}
+                    <th style="text-align: center">Cron表达式</th>
+                    <th style="text-align: center">是否启用</th>
+                    <th style="text-align: center">当前状态</th>
+                    {#                    <th style="text-align: center">说明</th>#}
+                    {#                    <th style="text-align: center">修改时间</th>#}
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for job in jobs %}
+
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ forloop.counter }}</th>
+                        <td style="text-align: center">{{ job.name }}</td>
+                        <td style="text-align: center">{{ job.remote_ip }}</td>
+                        {#                        <td style="text-align: center">{{ job.remote_port }}</td>#}
+                        <td style="text-align: center">{{ job.remote_cmd }}</td>
+                        {#                        <td style="text-align: center">{{ job.remote_name }}</td>#}
+                        {#                        <td style="text-align: center">{{ job.timeout }}</td>#}
+                        <td style="text-align: center">{{ job.cron_exp }}</td>
+                        <td style="text-align: center">{{ job.get_use_flag_display }}</td>
+                        <td style="text-align: center">{{ job.get_current_status_display }}</td>
+                        {#                        <td style="text-align: center">{{ job.comment }}</td>#}
+                        {#                        <td style="text-align: center">{{ job.update_time|date:"Y-m-d  H:i:s" }}</td>#}
+                        <td style="text-align: center">
+                            <input class="btn btn-success btn-xs" type="button" style="color:black;"
+                                   onclick="show_detail('{{ job.name }}','{{ job.remote_ip }}','{{ job.remote_port }}','{{ job.remote_cmd }}','{{ job.remote_name }}',
+                                           '{{ job.timeout }}','{{ job.cron_exp }}','{{ job.get_use_flag_display }}','{{ job.get_current_status_display }}','{{ job.comment }}','{{ job.update_time|date:"Y-m-d  H:i:s" }}')"
+                                   value="详情"/>
+                            <input class="btn btn-danger btn-xs" type="button" style="color:black;"
+                                   onclick="show_confirm('{{ job.id }}','{{ job.name }}')" value="删除"/>
+                            <a class="btn btn-primary btn-xs" href="/cron/job/{{ job.id }}/update"
+                               style="color:yellow;">修改</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a style="margin-left: 10px">注：因牵涉内部业务代码函数，下方列表不支持页面新增，仅支持定时等修改</a>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                内部业务函数定时列表
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">编号</th>
+                    <th style="text-align: center">函数名</th>
+                    <th style="text-align: center">函数传参</th>
+                    <th style="text-align: center">Cron表达式</th>
+                    <th style="text-align: center">是否启用</th>
+                    <th style="text-align: center">用途</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for fun_job in fun_jobs %}
+
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ forloop.counter }}</th>
+                        <td style="text-align: center">{{ fun_job.fun_name }}</td>
+                        <td style="text-align: center">{{ fun_job.fun_args }}</td>
+                        <td style="text-align: center">{{ fun_job.cron_exp }}</td>
+                        <td style="text-align: center">{{ fun_job.get_use_flag_display }}</td>
+                        <td style="text-align: center">{{ fun_job.purpose }}</td>
+
+                        <td style="text-align: center">
+                            <a class="btn btn-primary btn-xs" href="/cron/fun_job/{{ fun_job.id }}/update"
+                               style="color:yellow;">修改</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

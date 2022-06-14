@@ -1,0 +1,103 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>数据库表空间</title>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <h3 align="center">20.2数据库表空间</h3>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                SGA、PGA使用情况
+            </div>
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">指标名</th>
+                    <th style="text-align: center">总大小(M)</th>
+                    <th style="text-align: center">已使用(M)</th>
+                    <th style="text-align: center">剩余量(M)</th>
+                    <th style="text-align: center">使用率(%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sp in sga_pga %}
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ sp.0 }}</th>
+                        <td style="text-align: center">{{ sp.1 }}</td>
+                        <td style="text-align: center">{{ sp.2 }}</td>
+                        <th style="text-align: center" scope="row">{{ sp.3 }}</th>
+                        <td style="text-align: center">{{ sp.4 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                表空间现状概览（注意使用率不能完全说明没空间）
+            </div>
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">表空间</th>
+                    <th style="text-align: center">总大小(M)</th>
+                    <th style="text-align: center">已使用(M)</th>
+                    <th style="text-align: center">剩余量(M)</th>
+                    <th style="text-align: center">使用率(%)</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for tbs in tablespace_total %}
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ tbs.0 }}</th>
+                        <td style="text-align: center">{{ tbs.1 }}</td>
+                        <td style="text-align: center">{{ tbs.2 }}</td>
+                        <th style="text-align: center" scope="row">{{ tbs.3 }}</th>
+                        <td style="text-align: center">{{ tbs.4 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                表空间数据文件使用率
+            </div>
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">表空间</th>
+                    <th style="text-align: center">数据文件</th>
+                    <th style="text-align: center">大小(M)</th>
+                    <th style="text-align: center">已使用(M)</th>
+                    <th style="text-align: center">使用率(%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tbsf in tablespace_file %}
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ tbsf.0 }}</th>
+                        <td style="text-align: center">{{ tbsf.1 }}</td>
+                        <td style="text-align: center">{{ tbsf.2 }}</td>
+                        <th style="text-align: center" scope="row">{{ tbsf.3 }}</th>
+                        <th style="text-align: center" scope="row">{{ tbsf.4 }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

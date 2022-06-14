@@ -1,0 +1,75 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>定时任务新增</title>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"> 新增任务</h3><a>（由于内部专业人员使用，字段未做过多验证，请准确填写）</a>
+                <a style="color: red">{{ error_message }}</a>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>任务名称</label>
+                        <input type="text" class="form-control" placeholder="任务在调度器中唯一标识，不可重复" name="name" value="{{ name }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>服务器IP</label>
+                        <input type="text" class="form-control" placeholder="需执行命令的服务器IP" name="remote_ip" value="{{ remote_ip }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>端口</label>
+                        <input type="text" class="form-control" placeholder="远程服务器端口" name="remote_port" value="{{ remote_port }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>命令</label>
+                        <input type="text" class="form-control" placeholder="完整执行命令（多个命令可以英文分号分开）：cd /home;ls -l" name="remote_cmd" value="{{ remote_cmd }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" class="form-control" placeholder="服务器登录名" name="remote_name" value="{{ remote_name }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="text" class="form-control" placeholder="服务器登录密码" name="remote_password" value="{{ remote_password }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>超时设置（秒）</label>
+                        <input type="text" class="form-control" placeholder="评估一下命令执行所需时间，后台作为超时标准判断" name="timeout" value="{{ timeout }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>标准cron表达式</label>
+                        <input type="text" class="form-control" placeholder="标准cron表达式,如每30分钟执行一下：*/30 * * * *" name="cron_exp" value="{{ cron_exp }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>注释</label>
+                        <input type="text" class="form-control" placeholder="定时任务的注释备注等" name="comment" value="{{ comment }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>是否启用</label>
+                        <select class="form-control" name="use_flag">
+                            {% for item in flag_choice %}
+                                {% if use_flag == item.0 %}
+                                    <option value="{{ item.0 }}" selected="selected">{{ item.1 }}</option>
+                                {% else %}
+                                    <option value="{{ item.0 }}">{{ item.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">提 交</button>
+                    <a class="btn btn-primary" href="/cron/job">返 回</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

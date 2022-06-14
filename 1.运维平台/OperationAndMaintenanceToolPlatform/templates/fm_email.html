@@ -1,0 +1,95 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>流量仪报警</title>
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript">
+        function show_confirm(id, name, email) {
+            var r = confirm("请确认是否删除:" + name + "的邮箱" + email);
+            var url_d = '/fm/email/' + id + '/delete';
+            console.log(url_d);
+            if (r == true) {
+                console.log("准备执行删除");
+                $.get(url_d, function (data, status) {
+                    alert("处理结果: " + data + "\n接口状态: " + status);
+                    location.reload();
+                });
+            } else {
+                alert("已取消删除");
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3 align="center">本页面用于维护指定流量仪版本报警监控发送邮件收件人列表</h3>
+        <h5 align="center">脚本作用：定时巡检流量仪系统报警数量，超过边界就发送邮件通知客户及需求、运维、测试</h5>
+        <h5 align="center">脚本说明：后台有定时任务巡检报警数量，定时可在定时任务页面进行修改</h5>
+        <h5 align="center">【本功能仅校验支持163、qq、foxmail、云瀚企业邮箱四种邮箱格式，其他邮箱无法校验通过】</h5>
+        <div style="margin-bottom: 10px;">
+            <form action="/fm/email" method="post" style="margin-right:10px;">
+                {% csrf_token %}
+                监控流量仪地址 : <input type="text" style="margin-right: 30px" name="fm_address" size="20"
+                                 value={{ fm_address }}>
+                边界（即报警超过此数才发送邮件）：<input type="text" style="margin-right: 5px" name="fm_alarm_level" size="1"
+                                        value={{ fm_alarm_level }}>个
+                <input class="btn btn-primary btn-xs" type="submit" style="margin-left: 20px" value="确 定">
+                <a class="btn btn-primary btn-xs" href="/fm/email">刷 新</a>
+                <a style="color: red;margin-left: 15px">{{ message }}</a>
+            </form>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <a class="btn btn-success" href="/fm/email/add">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                新增邮箱</a>
+            <a style="margin-left: 10px">当前已启用邮箱数量：{{ use_num }}个</a>
+            <a style="margin-left: 30px">当前实时报警数量：{{ alarm_num }}个</a>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                邮件列表
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">编号</th>
+                    <th style="text-align: center">姓名</th>
+                    <th style="text-align: center">邮箱</th>
+                    <th style="text-align: center">是否启用</th>
+                    <th style="text-align: center">创建时间</th>
+                    <th style="text-align: center">修改时间</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for el in email_list %}
+                    <tr>
+                        <th style="text-align: center" scope="row">{{ forloop.counter }}</th>
+                        <td style="text-align: center">{{ el.name }}</td>
+                        <td style="text-align: center">{{ el.email }}</td>
+                        <td style="text-align: center">{{ el.get_use_flag_display }}</td>
+                        <td style="text-align: center">{{ el.create_time|date:"Y-m-d  H:i:s" }}</td>
+                        <td style="text-align: center">{{ el.update_time|date:"Y-m-d  H:i:s" }}</td>
+                        <td style="text-align: center">
+                            <input class="btn btn-danger btn-xs" type="button" style="color:black;"
+                                   onclick="show_confirm('{{ el.id }}','{{ el.name }}','{{ el.email }}')" value="删除"/>
+                            {#                            <a class="btn btn-primary btn-xs" href="/fm/email/{{ el.id }}/delete" style="color:red;">删除</a>#}
+                            <a class="btn btn-primary btn-xs" href="/fm/email/{{ el.id }}/update" style="color:yellow;">修改</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}

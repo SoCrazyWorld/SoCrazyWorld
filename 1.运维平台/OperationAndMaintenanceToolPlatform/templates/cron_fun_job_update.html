@@ -1,0 +1,51 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+    <title>内部业务函数定时修改</title>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"> 修改内部业务函数定时任务:{{ job.fun_name }}</h3> <a style="color: red">{{ error_message }}</a>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>函数传参</label>
+                        <input type="text" class="form-control" placeholder="函数的参数，如(arg1,arg2),空的请写()" name="fun_args" value="{{ job.fun_args }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>标准cron表达式</label>
+                        <input type="text" class="form-control" placeholder="标准cron表达式,如每30分钟执行一下：*/30 * * * *" name="cron_exp" value="{{ job.cron_exp }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>作用/用途</label>
+                        <input type="text" class="form-control" placeholder="内部业务函数的作用描述" name="purpose" value="{{ job.purpose }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>是否启用</label>
+                        <select class="form-control" name="use_flag">
+                            {% for item in flag_choice %}
+                                {% if job.use_flag == item.0 %}
+                                    <option value="{{ item.0 }}" selected="selected">{{ item.1 }}</option>
+                                {% else %}
+                                    <option value="{{ item.0 }}">{{ item.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">提 交</button>
+                    <a class="btn btn-primary" href="/cron/job">返 回</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

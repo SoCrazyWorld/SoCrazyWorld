@@ -1,0 +1,77 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    <title>Eureka注册维护</title>
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript">
+        function show_confirm(url, app, pod) {
+            var r = confirm("请确认是否删除注册: " + pod);
+            var url_d = '/eureka/delete?url=' + url + '&app=' + app + '&pod=' + pod;
+            console.log(url_d);
+            if (r == true) {
+                console.log("准备执行删除接口");
+                $.get(url_d, function (data, status) {
+                    alert("处理结果: " + data + "\n接口状态: " + status);
+                    location.reload();
+                });
+            } else {
+                alert("已取消删除");
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block head %}
+    <h1 align="center" style="color:red;line-height: 5px;line-height: 1px">请务必再三确定POD服务再删除</h1>
+    <h6 align="center" style="color:green;line-height: 30px">【本页面用于手动清除Eureka服务注册，解决心跳过长服务未能及时清除问题】</h6>
+{% endblock %}
+{% block body %}
+    <div style="width: 100%">
+        <span style="margin-left:80px;">本次共发现POD服务：</span>
+        <a style="color:green;">{{ count }}个</a>
+        <a href="/eureka?address={{ eureka_url }}" style="margin-left:202px;" class="btn btn-primary btn-xs">刷新页面</a>
+        <form action="/eureka" style="float: right;margin-right:10px;">
+            {#        {% csrf_token %}#}
+            目标Eureka地址 : <input type="text" name="address" size="30" value={{ eureka_url }}>
+            <input type="submit" class="btn btn-primary btn-xs" style="margin-right:100px;margin-left: 10px"
+                   value="确 定">
+            <a style="float: right;color: red;margin-left: 5px">{{ message }}</a>
+        </form>
+    </div>
+    <div style="margin-top: 10px">
+        <table border="1" style="margin: auto;table-layout: fixed">
+            <thread>
+                <tr>
+                    <th style="text-align: center">应用</th>
+                    <th style="text-align: center">当前存在服务</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+            </thread>
+            <tbody>
+            {% for eureka in eureka_list %}
+                <tr>
+                    <td>{{ eureka.0 }}</td>
+                    <td>{{ eureka.1 }}</td>
+                    <td>
+                        {#                    <a href="/eureka/delete?url={{ eureka_url }}&app={{ eureka.0 }}&pod={{ eureka.1 }}"#}
+                        {#                       style="color:red;">删除</a>#}
+                        <input class="btn btn-danger btn-xs" type="button" style="color:black;"
+                               onclick="show_confirm('{{ eureka_url }}','{{ eureka.0 }}','{{ eureka.1 }}')" value="删除"/>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    <div style="color: blue;margin: 0 auto;text-align:center;width: 100% ">
+
+        <a>版本V1.0(202204)</a>
+        <a style="margin-left: 80px">上海云瀚科技股份有限公司</a>
+        <a style="margin-left: 80px" href="mailto:zhanglw@icity.inesa.com">反馈邮箱</a>
+    </div>
+{% endblock %}
