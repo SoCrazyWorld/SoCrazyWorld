@@ -14,10 +14,10 @@ import logging
 
 logger = logging.getLogger("mylogger")
 
-# mailto_list = ['602444500@qq.com']  # 收件人(列表)
+# mailto_list = ['***']  # 收件人(列表)
 mail_host = "smtp.ym.163.com"
-mail_user = "yunwei@icity.inesa.com"
-mail_pass = "yunwei"
+mail_user = "***"
+mail_pass = "****"
 
 
 def get_fm_email_list():
@@ -26,7 +26,7 @@ def get_fm_email_list():
     for ob in email_list_ob:
         email_list.append(ob.email)
     if len(email_list) == 0:
-        email_list = ['987018011@qq.com', '602444500@qq.com', '312060620@qq.com', '103250309@qq.com']
+        email_list = ['***', '**']
     return email_list
 
 
