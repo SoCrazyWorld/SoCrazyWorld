@@ -23,7 +23,7 @@ cron_logger = logging.getLogger("cron_logger")
 def get_fm_alarm():
     base_url = FmAlarmEmailConfig.objects.all().filter(name="目标流量仪地址").first().value
     fm_alarm_url = "%s/wm/V1/fm/alarm/active_alerts" % base_url
-    # fm_alarm_url = r"http://192.168.50.2:31604/wm/V1/fm/alarm/active_alerts"
+ 
     try:
         rp = requests.get(fm_alarm_url).text
         rp_json = json.loads(rp)
