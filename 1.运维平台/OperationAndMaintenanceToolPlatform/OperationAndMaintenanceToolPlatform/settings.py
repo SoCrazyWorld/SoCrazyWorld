@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'OperationAndMaintenanceToolPlatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'PDBORCL',
-        'USER': 'wm3point',
-        'PASSWORD': 'wm3point',
-        'HOST': '192.168.20.2',
-        'PORT': '1521',
+        'NAME': '***',
+        'USER': '***',
+        'PASSWORD': '****',
+        'HOST': '*****',
+        'PORT': '****',
     }
 }
 
@@ -133,7 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 日志配置
 # 管理员邮箱
 ADMINS = (
-    ('伟哥', '602444500@qq.com'),
+    ('伟哥', '**'),
 )
 
 # 非空链接，却发生404错误，发送通知MANAGERS
@@ -144,8 +144,8 @@ MANAGERS = ADMINS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.ym.163.com'  # QQ邮箱SMTP服务器(邮箱需要开通SMTP服务)
 EMAIL_PORT = 25  # QQ邮箱SMTP服务端口
-EMAIL_HOST_USER = 'yunwei@icity.inesa.com'  # 我的邮箱帐号
-EMAIL_HOST_PASSWORD = 'yunwei'  # 授权码
+EMAIL_HOST_USER = '*****'  # 我的邮箱帐号
+EMAIL_HOST_PASSWORD = '****'  # 授权码
 EMAIL_SUBJECT_PREFIX = '宝山运维'  # 为邮件标题的前缀,默认是'[django]'
 EMAIL_USE_TLS = True  # 开启安全链接
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER  # 设置发件人
